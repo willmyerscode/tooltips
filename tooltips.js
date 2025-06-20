@@ -11,6 +11,8 @@ class Tooltips {
   <path d="M12 19l0 .01"/>
 </svg>`,
     type: "text",
+    interactive: true,
+    colorTheme: "white",
     trigger: 'mouseenter focus',
   };
   static get userSettings() {
@@ -121,8 +123,8 @@ class Tooltips {
         let iconElement = this.createIcon();
 
         if (currentElement && iconElement) {
-          currentElement.style.position = "relative";
-          currentElement.style.display = "inline-block";
+          // currentElement.style.position = "relative";
+          // currentElement.style.display = "inline-block";
           currentElement.appendChild(iconElement);
           // Use the icon as the tooltip target
           tooltipTarget = iconElement;
@@ -130,6 +132,7 @@ class Tooltips {
       }
 
       // Initialize tooltip on the correct target
+      tooltipTarget.dataset.tooltipHref = item.href;
       const appendTarget =
         document.querySelector("#siteWrapper") || document.body;
       tippy(tooltipTarget, {
@@ -203,6 +206,7 @@ class Tooltips {
   setClasses(instance, item) {
     instance.popper.classList.add("wm-tooltip");
     instance.popper.setAttribute("data-wm-plugin", "tooltip");
+    instance.popper.dataset.sectionTheme = this.settings.colorTheme;
 
     const hrefClass = item.href
       .replace("#", "")
