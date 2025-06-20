@@ -4,21 +4,21 @@
 * Development Lead, Abi Bacon
 **/
 
-[data-wm-plugin="tooltip"] {
+/* [data-wm-plugin="tooltip"] {
   --tt-text-color: var(--siteBackgroundColor);
   --tt-font-size: 1rem;
   --tt-font-family: var(--body-font-font-family);
   --tt-font-weight: 400;
-  
+
   --tt-parent-font-style: italic;
   --tt-parent-text-decoration: underline;
   --tt-parent-text-decoration-thickness: 1px;
-  
+
   --tt-background-color: var(--paragraphMediumColor);
-  
+
   --tt-icon-size: 14px;
   --tt-icon-color: var(--paragraphMediumColor);
-  
+
   --tt-border-radius: 7px;
   --tt-border-color: white;
   --tt-border-width: 0px;
@@ -28,89 +28,76 @@
   --tt-max-width: 350px;
 
   --tt-text-align: start;
-}
+} */
 
-[data-wm-plugin="tooltip"].tooltip-parent {
-  font-style: var(--tt-parent-font-style);
-  text-decoration: var(--tt-parent-text-decoration);
-  text-decoration-thickness: var(--tt-parent-text-decoration-thickness);
+span[data-wm-plugin="tooltip"].tooltip-parent {
+  text-decoration: var(--tt-underline-style, underline dotted);
+  text-decoration-thickness: var(--tt-underline-thickness, .08em);
+  text-underline-offset: var(--tt-underline-offset, 2px);
 }
-
-[data-wm-plugin="tooltip"].tooltip-parent:has(.wm-tooltip-icon) {
-  background: unset;
+span[data-wm-plugin="tooltip"].tooltip-parent:has(.wm-tooltip-icon) {
   text-decoration: none;
-  font-style: normal;
 }
 
-a[data-wm-plugin="tooltip"].tooltip-parent:has(.wm-tooltip-icon) {
-  font-style: var(--tt-parent-font-style);
-  text-decoration: var(--tt-parent-text-decoration);
+h1 [data-wm-plugin="tooltip"].tooltip-parent,
+h2 [data-wm-plugin="tooltip"].tooltip-parent,
+h3 [data-wm-plugin="tooltip"].tooltip-parent,
+h4 [data-wm-plugin="tooltip"].tooltip-parent {
+  color: var(--tt-parent-color, var(--headingLinkColor));
 }
 
-/** Button Styling **/
-.sqs-button-element--secondary.tooltip-parent {
-  color: var(--secondaryButtonTextColor);
-}
-
-.sqs-button-element--primary.tooltip-parent {
-  color: var(--primaryButtonTextColor);
-}
-
-.sqs-button-element--tertiary.tooltip-parent {
-  color: var(--tertiaryButtonTextColor);
-}
-
-.sqs-button-element--secondary.tooltip-parent, .sqs-button-element--primary.tooltip-parent, .sqs-button-element--tertiary.tooltip-parent {
-  text-decoration: none;
-  font-style: normal;
-}
-
-[data-wm-plugin="tooltip"].tooltip-parent.sqs-block-button-element {
-  display: flex !important;
+p [data-wm-plugin="tooltip"].tooltip-parent {
+  color: var(--tt-parent-color, var(--paragraphLinkColor));
 }
 
 [data-wm-plugin="tooltip"] .wm-tooltip-icon svg {
-  height: var(--tt-icon-size);
-  width: var(--tt-icon-size);
-  stroke: var(--tt-icon-color);
-  color: var(--tt-icon-color);
+  height: var(--tt-icon-size, 14px);
+  width: var(--tt-icon-size, 14px);
+  stroke: var(--tt-icon-color, var(--paragraphMediumColor));
+  color: var(--tt-icon-color, var(--paragraphMediumColor));
 }
 
 [data-wm-plugin="tooltip"] .wm-tooltip-content {
-  padding: var(--tt-padding);
-  text-align: var(--tt-text-align);
+  padding: var(--tt-padding, 7px);
+  text-align: var(--tt-text-align, start);
 }
 
 [data-wm-plugin="tooltip"] .wm-tooltip-box.tippy-box {
-  color: var(--tt-text-color);
-  font-size: var(--tt-font-size);
-  font-family: var(--tt-font-family);
-  font-weight: var(--tt-font-weight);
-  background: var(--tt-background-color);
-  border-radius: var(--tt-border-radius);
-  border-color: var(--tt-border-color);
-  border-style: var(--tt-border-style);
-  border-width: var(--tt-border-width);
-  max-width: var(--tt-max-width) !important;
+  color: var(--tt-text-color, var(--paragraphMediumColor));
+  font-size: var(--tt-font-size, 1rem);
+  font-family: var(--tt-font-family, var(--body-font-font-family));
+  font-weight: var(--tt-font-weight, 400);
+  background: var(--tt-background-color, var(--siteBackgroundColor));
+  border-radius: var(--tt-border-radius, 7px);
+  border-color: var(--tt-border-color, white);
+  border-style: var(--tt-border-style, solid);
+  border-width: var(--tt-border-width, 0px);
+  max-width: var(--tt-max-width, 350px) !important;
 }
 
-.wm-tooltip-box.tippy-box[data-placement^='top'] > .tippy-arrow::before {
-  border-top-color: var(--tt-background-color);
+.wm-tooltip-box.tippy-box[data-placement^="top"] > .tippy-arrow::before {
+  border-top-color: var(--tt-background-color, var(--siteBackgroundColor));
 }
-.wm-tooltip-box.tippy-box[data-placement^='bottom'] > .tippy-arrow::before {
-  border-bottom-color: var(--tt-background-color);
+.wm-tooltip-box.tippy-box[data-placement^="bottom"] > .tippy-arrow::before {
+  border-bottom-color: var(--tt-background-color, var(--siteBackgroundColor));
 }
-.wm-tooltip-box.tippy-box[data-placement^='left'] > .tippy-arrow::before {
-  border-left-color: var(--tt-background-color);
+.wm-tooltip-box.tippy-box[data-placement^="left"] > .tippy-arrow::before {
+  border-left-color: var(--tt-background-color, var(--siteBackgroundColor));
 }
-.wm-tooltip-box.tippy-box[data-placement^='right'] > .tippy-arrow::before {
-   border-right-color: var(--tt-backgorund-color);
+.wm-tooltip-box.tippy-box[data-placement^="right"] > .tippy-arrow::before {
+  border-right-color: var(--tt-backgorund-color, var(--siteBackgroundColor));
 }
 
 .form-item legend .tooltip-parent {
   display: flex !important;
 }
 
-[data-wm-plugin="tooltip"] img {
-  max-width: calc(var(--tt-max-width) - var(--tt-padding) * 2);
+[data-wm-plugin="tooltip"] .wm-tooltip-content img {
+  width:100%;
+  max-height: 350px;
+  display: block;
+}
+
+[data-wm-plugin="tooltip"] .wm-tooltip-content a {
+  text-decoration: underline;
 }
