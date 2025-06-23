@@ -4,32 +4,6 @@
 * Development Lead, Abi Bacon
 **/
 
-/* [data-wm-plugin="tooltip"] {
-  --tt-text-color: var(--siteBackgroundColor);
-  --tt-font-size: 1rem;
-  --tt-font-family: var(--body-font-font-family);
-  --tt-font-weight: 400;
-
-  --tt-parent-font-style: italic;
-  --tt-parent-text-decoration: underline;
-  --tt-parent-text-decoration-thickness: 1px;
-
-  --tt-background-color: var(--paragraphMediumColor);
-
-  --tt-icon-size: 14px;
-  --tt-icon-color: var(--paragraphMediumColor);
-
-  --tt-border-radius: 7px;
-  --tt-border-color: white;
-  --tt-border-width: 0px;
-  --tt-border-style: solid;
-
-  --tt-padding: 7px;
-  --tt-max-width: 350px;
-
-  --tt-text-align: start;
-} */
-
 span[data-wm-plugin="tooltip"].tooltip-parent {
   text-decoration: var(--tt-underline-style, underline dotted);
   text-decoration-thickness: var(--tt-underline-thickness, .08em);
