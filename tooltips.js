@@ -14,6 +14,7 @@ class Tooltips {
     interactive: true,
     colorTheme: "white",
     trigger: 'mouseenter focus',
+    animation:'fade'
   };
   static get userSettings() {
     return window["wmTooltipSettings"] || {};
@@ -144,8 +145,18 @@ class Tooltips {
         offset: tooltipSettings.offset,
         trigger: tooltipSettings.trigger,
         appendTo: appendTarget,
+        animation: tooltipSettings.animation,
+        onShow: instance => {
+          // Hide initially to prevent off-screen flash
+          instance.popper.style.visibility = 'hidden';
+        },
         onMount: instance => {
           this.setClasses(instance, item);
+          // Force position recalculation and then show
+          setTimeout(() => {
+            instance.popperInstance?.update();
+            instance.popper.style.visibility = 'visible';
+          }, 0);
         },
       });
 
@@ -189,8 +200,17 @@ class Tooltips {
             offset: this.settings.offset,
             trigger: this.settings.trigger,
             appendTo: appendTarget,
+            onShow: instance => {
+              // Hide initially to prevent off-screen flash
+              instance.popper.style.visibility = 'hidden';
+            },
             onMount: instance => {
               this.setFormClasses(instance, field);
+              // Force position recalculation and then show
+              setTimeout(() => {
+                instance.popperInstance?.update();
+                instance.popper.style.visibility = 'visible';
+              }, 0);
             },
           });
 
@@ -232,6 +252,8 @@ class Tooltips {
   setFormClasses(instance, field) {
     instance.popper.classList.add("wm-tooltip", "wm-form-tooltip");
     instance.popper.setAttribute("data-wm-plugin", "tooltip");
+    instance.popper.dataset.sectionTheme = this.settings.colorTheme;
+
 
     const tippyBox = instance.popper.querySelector(".tippy-box");
     if (tippyBox) {
