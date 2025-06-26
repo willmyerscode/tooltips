@@ -5,10 +5,12 @@
 **/
 
 span[data-wm-plugin="tooltip"].tooltip-parent {
-  text-decoration: var(--tt-underline-style, underline dotted);
-  text-decoration-thickness: var(--tt-underline-thickness, .08em);
-  text-underline-offset: var(--tt-underline-offset, 2px);
+  text-decoration: var(--tt-underline, underline);
+  text-decoration-style: var(--tt-underline-style, dotted);
+  text-decoration-thickness: var(--tt-underline-thickness,.08em);
+  text-underline-offset: var(--tt-underline-offset,2px);
 }
+
 span[data-wm-plugin="tooltip"].tooltip-parent:has(.wm-tooltip-icon) {
   text-decoration: none;
 }
