@@ -3,6 +3,7 @@ class Tooltips {
   static defaultSettings = {
     content: "This is placeholder content",
     allowHTML: true,
+    iconLabel: "More information",
     offset: [0, 10],
     customIcon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-question-mark">
   <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1"/>
@@ -134,6 +135,13 @@ class Tooltips {
 
       // Initialize tooltip on the correct target
       tooltipTarget.dataset.tooltipHref = item.href;
+
+      // Make the trigger reachable and announceable for keyboard / screen readers
+      this.makeTriggerAccessible(tooltipTarget, {
+        isIcon: item.icon === true,
+        label: item.label || tooltipSettings.iconLabel,
+      });
+
       const appendTarget =
         document.querySelector("#siteWrapper") || document.body;
       tippy(tooltipTarget, {
@@ -146,9 +154,16 @@ class Tooltips {
         trigger: tooltipSettings.trigger,
         appendTo: appendTarget,
         animation: tooltipSettings.animation,
+        // interactive: true cancels Tippy's auto aria-describedby, so force it on
+        aria: { content: 'describedby', expanded: 'auto' },
         onShow: instance => {
           // Hide initially to prevent off-screen flash
           instance.popper.style.visibility = 'hidden';
+          // WCAG 1.4.13: allow dismissing the tooltip with the Escape key
+          instance._wmEscHandler = e => {
+            if (e.key === 'Escape') instance.hide();
+          };
+          document.addEventListener('keydown', instance._wmEscHandler);
         },
         onMount: instance => {
           this.setClasses(instance, item);
@@ -157,6 +172,12 @@ class Tooltips {
             instance.popperInstance?.update();
             instance.popper.style.visibility = 'visible';
           }, 0);
+        },
+        onHidden: instance => {
+          if (instance._wmEscHandler) {
+            document.removeEventListener('keydown', instance._wmEscHandler);
+            instance._wmEscHandler = null;
+          }
         },
       });
 
@@ -187,6 +208,12 @@ class Tooltips {
             tooltipTarget = iconElement;
           }
 
+          // Make the trigger reachable and announceable for keyboard / screen readers
+          this.makeTriggerAccessible(tooltipTarget, {
+            isIcon: tooltipTarget === iconElement,
+            label: this.settings.iconLabel,
+          });
+
           // Initialize tooltip on the correct target
           const appendTarget =
             document.querySelector("#siteWrapper") || document.body;
@@ -200,9 +227,16 @@ class Tooltips {
             offset: this.settings.offset,
             trigger: this.settings.trigger,
             appendTo: appendTarget,
+            // interactive: true cancels Tippy's auto aria-describedby, so force it on
+            aria: { content: 'describedby', expanded: 'auto' },
             onShow: instance => {
               // Hide initially to prevent off-screen flash
               instance.popper.style.visibility = 'hidden';
+              // WCAG 1.4.13: allow dismissing the tooltip with the Escape key
+              instance._wmEscHandler = e => {
+                if (e.key === 'Escape') instance.hide();
+              };
+              document.addEventListener('keydown', instance._wmEscHandler);
             },
             onMount: instance => {
               this.setFormClasses(instance, field);
@@ -211,6 +245,12 @@ class Tooltips {
                 instance.popperInstance?.update();
                 instance.popper.style.visibility = 'visible';
               }, 0);
+            },
+            onHidden: instance => {
+              if (instance._wmEscHandler) {
+                document.removeEventListener('keydown', instance._wmEscHandler);
+                instance._wmEscHandler = null;
+              }
             },
           });
 
@@ -274,6 +314,29 @@ class Tooltips {
   parentStyling(targetElement) {
     targetElement.classList.add("tooltip-parent");
     targetElement.setAttribute("data-wm-plugin", "tooltip");
+  }
+
+  makeTriggerAccessible(triggerEl, { isIcon = false, label } = {}) {
+    if (!triggerEl) return;
+
+    // Don't add a second tab stop to natively-focusable elements (real <a href>, buttons, etc.)
+    const alreadyFocusable = triggerEl.matches(
+      'a[href], button, input, select, textarea, [tabindex]'
+    );
+    if (!alreadyFocusable) triggerEl.setAttribute("tabindex", "0");
+
+    if (isIcon) {
+      // An icon is a non-text control: give it button semantics and an accessible name
+      if (!triggerEl.hasAttribute("role")) {
+        triggerEl.setAttribute("role", "button");
+      }
+      if (label && !triggerEl.hasAttribute("aria-label")) {
+        triggerEl.setAttribute("aria-label", label);
+      }
+      // The SVG itself is decorative once the trigger is labelled
+      const svg = triggerEl.querySelector("svg");
+      if (svg) svg.setAttribute("aria-hidden", "true");
+    }
   }
 
   createIcon() {
