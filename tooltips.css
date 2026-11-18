@@ -61,7 +61,7 @@ p [data-wm-plugin="tooltip"].tooltip-parent {
   border-left-color: var(--tt-background-color, var(--siteBackgroundColor));
 }
 .wm-tooltip-box.tippy-box[data-placement^="right"] > .tippy-arrow::before {
-  border-right-color: var(--tt-backgorund-color, var(--siteBackgroundColor));
+  border-right-color: var(--tt-background-color, var(--siteBackgroundColor));
 }
 
 .form-item legend .tooltip-parent {

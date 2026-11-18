@@ -122,7 +122,7 @@ class Tooltips {
       // Handle icon creation
       let tooltipTarget = currentElement;
       if (item.icon === true) {
-        let iconElement = this.createIcon();
+        let iconElement = this.createIcon(tooltipSettings.customIcon);
 
         if (currentElement && iconElement) {
           // currentElement.style.position = "relative";
@@ -339,12 +339,12 @@ class Tooltips {
     }
   }
 
-  createIcon() {
+  createIcon(iconHTML = this.settings.customIcon) {
     // Create a container for the icon
     let iconElement = document.createElement("sup");
     let iconInnerElement = document.createElement("span");
     iconElement.className = "wm-tooltip-icon";
-    iconElement.innerHTML = this.settings.customIcon;
+    iconElement.innerHTML = iconHTML;
 
     // Style the icon to appear on the right side
     iconElement.style.marginLeft = "5px";
